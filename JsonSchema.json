@@ -1,0 +1,262 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "title": "Activity",
+    "description": "Activities performed by GitHub contributors",
+    "properties": {
+        "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date on which the activity is performed"
+        },
+        "activity": {
+            "type": "string",
+            "description": "The activity performed by the contributor"
+        },
+        "contributor": {
+            "type": "string",
+            "description": "The login name of the contributor who performed this activty"
+        },
+        "repository": {
+            "type": "string",
+            "description": "The repository in which the activity is performed"
+        },
+        "issue": {
+            "$ref": "#/$defs/Issue"
+        },
+        "pull_request": {
+            "$ref": "#/$defs/PullRequest"
+        },
+        "review": {
+            "$ref": "#/$defs/Review"
+        },
+        "conversation": {
+            "$ref": "#/$defs/Conversation"
+        },
+        "comment": {
+            "$ref": "#/$defs/Comment"
+        },
+        "gitref": {
+            "$ref": "#/$defs/gitref"
+        },
+        "release": {
+            "$ref": "#/$defs/Release"
+        },
+        "page": {
+            "$ref": "#/$defs/Page"
+        },
+        "payload": {
+            "type": "object",
+            "description": "Other additional details",
+            "properties": {
+                "pr_changed_files": {
+                    "type": "integer",
+                    "description": "The number of files that are changed in this pullrequest"
+                },
+                "pr_commits": {
+                    "type": "integer",
+                    "description": "The number of commits in this pullrequest"
+                },
+                "pushed_commits": {
+                    "type": "integer",
+                    "description": "The number of commits in this pullrequest"
+                },
+                "distinct_pushed_commits": {
+                    "type": "integer",
+                    "description": "The distinct number of commits in this pullrequest"
+                },
+                "github_push_id": {
+                    "type": "integer",
+                    "description": "The corresponding github push id"
+                }
+            }
+        }
+    },
+    "required": ["date","activity","contributor","repository"],
+    "$defs": {
+        "Issue": {
+            "type": "object",
+            "title": "Issue information",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Issue number"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Issue title"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date on which this issue is created"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current state of the issue (open or closed)"
+                },
+                "closed_at": {
+                    "type": ["string", "null"],
+                    "format": "date-time",
+                    "description": "The date on which this issue is closed"
+                },
+                "resolved": {
+                    "type": "boolean",
+                    "description": "If the issue is resolved or not_planned/still open"
+                },
+                "GH_node": {
+                    "type": "string",
+                    "description": "The GitHub node of this issue"
+                }
+            },
+            "required": ["id","title","created_at","status","closed_at","resolved","GH_node"]
+        },
+        "PullRequest": {
+            "type": "object",
+            "title": "Pull request information",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Pull request number"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Pull request title"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date on which this pull request is created"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current state of the pull request (open or closed)"
+                },
+                "closed_at": {
+                    "type": ["string", "null"],
+                    "format": "date-time",
+                    "description": "The date on which this pull request is closed"
+                },
+                "merged": {
+                    "type": "boolean",
+                    "description": "If the pull request is merged or rejected/still open"
+                },
+                "GH_node": {
+                    "type": "string",
+                    "description": "The GitHub node of this pull request"
+                }
+            },
+            "required": ["id","title","created_at","status","closed_at","merged","GH_node"]
+        },
+        "Conversation": {
+            "type": "object",
+            "title": "comments information in issue or pull request",
+            "properties": {
+                "comments": {
+                    "type": "integer",
+                    "description": "Number of comments present in corresponding issue or pull request"
+                }
+            },
+            "required": ["comments"]
+        },
+        "Comment": {
+            "type": "object",
+            "title": "Comment information",
+            "properties": {
+                "length" : {
+                    "type" : "integer",
+                    "description": "Length of the comment text or description text in place where comment is not expected"
+                },
+                "GH_node": {
+                    "type": ["string", "null"],
+                    "description": "The GitHub node of this comment or description"
+                }
+            },
+            "required": ["length", "GH_node"]
+        },
+        "Review": {
+            "type": "object",
+            "title": "Pull request review information",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "If the pull request changes are approved or changes_requested"
+                },
+                "GH_node": {
+                    "type": "string",
+                    "description": "The GitHub node of this review"
+                }
+            },
+            "required": ["status","GH_node"]
+        },
+        "gitref": {
+            "type": "object",
+            "title": "Tag information",
+            "properties": {
+                "type" : {
+                    "type" : "string",
+                    "description": "Type of the gitref. Can be tag/branch/commit"
+                },
+                "name" : {
+                    "type" : "string",
+                    "description": "Name of the gitref"
+                },
+                "description_length" : {
+                    "type" : ["integer", "null"],
+                    "description": "Length of the description text provided while creating the gitref"
+                }
+            },
+            "required": ["type","name", "description_length"]
+        },
+        "Release": {
+            "type":"object",
+            "title":"Release information",
+            "properties": {
+                "name": {
+                    "type": ["string", "null"],
+                    "description": "The name of the release that is created"
+                },
+                "description_length": {
+                    "type": "integer",
+                    "description": "Description of the release that is created"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date at which the release is created (activity date is the release published date)"
+                },
+                "prerelease": {
+                    "type": "boolean",
+                    "description": "If the release that is created is a prerelease or not"
+                },
+                "new_tag": {
+                    "type": "boolean",
+                    "description": "If a new tag is created for this release or another tag is re-used"
+                },
+                "GH_node": {
+                    "type": "string",
+                    "description": "The corresponding release node id"
+                }
+            },
+            "required":["name","prerelease","new_tag","description_length","created_at","GH_node"]
+        },
+        "Page": {
+            "type": "object",
+            "title": "page information for documentatio/wiki",
+            "properties": {
+                "name" : {
+                    "type" : "string",
+                    "description": "Name of the page"
+                },
+                "title" : {
+                    "type" : "string",
+                    "description": "Title of the page"
+                },
+                "new" : {
+                    "type" : "boolean",
+                    "description": "If the page is created new or existing page is edited"
+                }
+            },
+            "required": ["name","title","new"]
+        }
+    }
+}
